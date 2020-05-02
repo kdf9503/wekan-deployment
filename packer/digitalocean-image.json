@@ -1,0 +1,26 @@
+{
+  "variables": {
+    "api_token": "{{env `DIGITALOCEAN_TOKEN`}}",
+    "image": "ubuntu-20-04-x64",
+    "region": "ams3",
+    "size": "s-1vcpu-1gb"
+  },
+  "sensitive-variables": ["api_token"],
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `api_token`}}",
+      "image": "{{user `image`}}",
+      "region": "{{user `region`}}",
+      "size": "{{user `size`}}",
+	  "ssh_username": "root",
+      "snapshot_name": "wekan-{{timestamp}}"
+    }
+  ],
+  "provisioners": [
+	{
+	  "type": "ansible",
+	  "playbook_file": "../ansible/site.yml"
+	}
+  ]
+}
